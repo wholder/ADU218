@@ -1,4 +1,4 @@
-<p align="center"><img src="https://github.com/wholder/ADU208/blob/master/images/ADU208%20Screenshot.png"></p>
+<p align="center"><img src="https://github.com/wholder/ADU208/tree/master/images/ADU208%20Screenshot.png"></p>
 
 # ADU208
 ADU208 provides a simple GUI interface that can send commands to an [OnTrak Control Systems](http://ontrak.net) ADU218 USB Relay I/O Interface.  to use, simply type a command into the text field at the bottom of the window and press enter.  Example commands are:
