@@ -1,7 +1,7 @@
-<p align="center"><img src="https://github.com/wholder/ADU208/tree/master/images/ADU208%20Screenshot.png"></p>
+<p align="center"><img src="https://github.com/wholder/ADU218/tree/master/images/ADU218%20Screenshot.png"></p>
 
-# ADU208
-ADU208 provides a simple GUI interface that can send commands to an [OnTrak Control Systems](http://ontrak.net) ADU218 USB Relay I/O Interface.  to use, simply type a command into the text field at the bottom of the window and press enter.  Example commands are:
+# ADU218
+ADU218 provides a simple GUI interface that can send commands to an [OnTrak Control Systems](http://ontrak.net) ADU218 USB Relay I/O Interface.  to use, simply type a command into the text field at the bottom of the window and press enter.  Example commands are:
 
  *  **`SKn`** - Enable Relay n
  *  **`RKn`** - Disable Relay n
@@ -23,5 +23,5 @@ Java 8 JDK, or later must be installed in order to compile the code.  There is a
 
 ## Credits
 LaserCut uses the following Java code to perform some of its functions, or build this project:
-- [hid4java](https://github.com/gary-rowe/hid4java) provides HID-based communication with the ADU208
+- [hid4java](https://github.com/gary-rowe/hid4java) provides HID-based communication with the ADU218
 - [IntelliJ IDEA from JetBrains](https://www.jetbrains.com/idea/) (my favorite development environment for Java coding. Thanks JetBrains!)
