@@ -40,7 +40,7 @@ public class ADU218Test extends JFrame {
   private static final Integer  PRODUCT_ID = 0x00DA;  // ADU218 USB Relay I/O Interface
   private static final int      PACKET_LENGTH = 7;
   private JTextArea             text = new JTextArea();
-  private JTextField            command;
+  private JTextField            command, serial;
 
   public static void main (String[] args) {
     new ADU218Test();
@@ -55,24 +55,37 @@ public class ADU218Test extends JFrame {
     text.setEditable(false);
     JScrollPane scroll = new JScrollPane(text, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     add(scroll, BorderLayout.CENTER);
-    command = new JTextField();
+    command = new JTextField(15);
+    serial = new JTextField(15);
+    JPanel bottom = new JPanel(new GridLayout(0, 2));
+    JPanel sPanel = new JPanel(new FlowLayout());
+    JPanel cPanel = new JPanel(new FlowLayout());
+    sPanel.add(new Label("Serial:"));
+    sPanel.add(serial);
+    cPanel.add(new Label("Command:"));
+    cPanel.add(command);
+    bottom.add(sPanel);
+    bottom.add(cPanel);
     command.addActionListener(ev -> {
       HidServices hidServices = HidManager.getHidServices();
       try {
-        HidDevice hidDevice = hidServices.getHidDevice(VENDOR_ID, PRODUCT_ID, null);
+        String serialNum = serial.getText().toUpperCase();
+        HidDevice hidDevice = hidServices.getHidDevice(VENDOR_ID, PRODUCT_ID, serialNum.length() > 0 ? serialNum : null);
         if (hidDevice != null) {
           if (hidDevice.isOpen()) {
             queryPortA(hidDevice, command.getText());
             command.setText("");
           }
           hidDevice.close();
+        } else {
+          text.append("Unable to connect to ADU218" + (serialNum.length() > 0 ? " - serial: " + serialNum : ""));
         }
       } catch (Exception ex) {
         text.append(ex.toString() + "\n");
         ex.printStackTrace();
       }
     });
-    add(command, BorderLayout.SOUTH);
+    add(bottom, BorderLayout.SOUTH);
     setLocationRelativeTo(null);
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     pack();

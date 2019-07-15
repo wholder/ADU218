@@ -18,8 +18,10 @@ ADU218 provides a simple GUI interface that can send commands to an [OnTrak Cont
  *  **`WDn`** - Sets Sets watchdog timeout length (1 = 1 sec, 2 = 10 secs, 3 = 1 min)
  *  **`WD`** - Returns watchdog setting
 
+Note: use the optional "**`Serial`**" text field to enter the serial number of a specific ADU218, or leave blank if only one connected.
+
 ### Requirements
-Java 8 JDK, or later must be installed in order to compile the code.  There is also a [**Runnable JAR file**](https://github.com/wholder/ADU208/tree/master/out/artifacts/ADU218Test_jar) included in the checked in code that you can download.   On a Mac, just double click the **`ADU218Test.jar`** file and it should startOn a Mac, simply double click the LaserCut.jar file to run it once you've downloaded it, although you'll probably have to right click and select "Open" the  first time you run LaserCut due to new Mac OS X security checks.  You should also be able to run the JAR file on Windows or Linux systems, but you'll need to have a Java 8 JRE, or later installed and follow the appropriate process for each needed to run an executable JAR file.
+Java 8 JDK, or later must be installed in order to compile the code.  There is also a [**Runnable JAR file**](https://github.com/wholder/ADU218/blob/master/out/artifacts/ADU218Test_jar) included in the checked in code that you can download.   On a Mac, just double click the **`ADU218Test.jar`** file and it should startOn a Mac, simply double click the **`LaserCut.jar`** file to run it once you've downloaded it, although you'll probably have to right click and select "Open" the  first time you run LaserCut due to new Mac OS X security checks.  You should also be able to run the JAR file on Windows or Linux systems, but you'll need to have a Java 8 JRE, or later installed and follow the appropriate process for each needed to run an executable JAR file.
 
 ## Credits
 LaserCut uses the following Java code to perform some of its functions, or build this project:
