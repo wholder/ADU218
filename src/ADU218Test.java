@@ -176,13 +176,7 @@ public class ADU218Test extends JFrame {
                 byte[] response = new byte[PACKET_LENGTH];
                 // This method will now block for 50 ms or until data is read
                 if (hidDevice.read(response, 50) > 0) {
-                  int rsp = 0;
-                  for (int ii = 1; ii < response.length & ii < 4; ii++) {
-                    if (response[ii] != 0 && response[ii] >= '0' && response[ii] <= '9') {
-                      rsp *= 10;
-                      rsp += response[ii] - '0';
-                    }
-                  }
+                  int rsp = parseValue(response);
                   int mask = 1;
                   for (Input input : inputs) {
                     input.setState((rsp & mask) != 0);
@@ -201,8 +195,8 @@ public class ADU218Test extends JFrame {
                 hidDevice.write(mk, PACKET_LENGTH, (byte) 0x01);
                 relayState = tmp;
               }
+              Thread.sleep(100);
             }
-            Thread.sleep(100);
           } else {
             errors.setText("Unable to connect to ADU218" + (serialNum.length() > 0 ? " - serial: " + serialNum : "") + "\n");
           }
@@ -357,6 +351,19 @@ public class ADU218Test extends JFrame {
       buf.insert(0, '0');
     }
     return buf.toString();
+  }
+
+  private int parseValue (byte[] data) {
+    StringBuilder buf = new StringBuilder();
+    for (int ii = 1; ii < data.length; ii++) {
+      char cc = (char) data[ii];
+      if (cc >= '0' && cc <= '9') {
+        buf.append(cc);
+      } else {
+        break;
+      }
+    }
+    return Integer.parseInt(buf.toString());
   }
 
   public static void main (String[] args) {
