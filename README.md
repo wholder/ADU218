@@ -23,7 +23,7 @@ Note: use the optional "**`Serial`**" text field to enter the serial number of a
 
 # Interactive Mode
 
-<p align="center"><img src="https://github.com/wholder/ADU218/blob/master/images/ADU212%20Screenshot-interactive.png"></p>
+<p align="center"><img src="https://github.com/wholder/ADU218/blob/master/images/ADU218%20Screenshot-interactive.png"></p>
 
 Selecting the "Interactive" tab open up a simple GUI interface that shows the state of the inputs in real time (10 Hz refresh rate) and lets you open and close amy of the 8 relays by clicking on the corresponding checkbox.
 
