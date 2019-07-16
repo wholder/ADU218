@@ -1,4 +1,4 @@
-# ADU218
+# Command Mode
 
 <p align="center"><img src="https://github.com/wholder/ADU218/blob/master/images/ADU218%20Screenshot-command.png"></p>
 
