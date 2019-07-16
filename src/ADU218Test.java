@@ -49,6 +49,112 @@ public class ADU218Test extends JFrame {
   private JTextArea             text = new JTextArea();
   private JTextField            command, serial;
 
+  abstract private class RunPane extends JPanel {
+    transient boolean         running;
+    private transient Thread  thread;
+
+   void start () {
+     running = true;
+     (thread = new Thread((Runnable) this)).start();
+   }
+
+   void stop () {
+     running = false;
+     if (thread != null) {
+       try {
+         thread.join(500);
+       } catch (InterruptedException ex) {
+         ex.printStackTrace();
+       }
+       thread = null;
+     }
+   }
+  }
+
+  private class Counter extends JPanel {
+    private transient int     count = -1;
+    private transient boolean doReset;
+    private JTextField        counter = new JTextField();
+
+    Counter (int num) {
+      setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 5));
+      setLayout(new BorderLayout());
+      JComponent comp;
+      add(comp = new JLabel((num < 4 ? "PA" + num : "PB" + (num - 4)) + " Count: "), BorderLayout.WEST);
+      comp.setFont(new Font("Monoco", Font.PLAIN, 22));
+      add(counter, BorderLayout.CENTER);
+      counter.setFont(new Font("Monoco", Font.PLAIN, 22));
+      counter.setHorizontalAlignment(SwingConstants.RIGHT);
+      JButton reset = new JButton("RESET");
+      add(reset, BorderLayout.EAST);
+      reset.addActionListener(ev -> doReset = true);
+    }
+
+    private void setCount (int count) {
+      if (this.count != count) {
+        counter.setText(Integer.toString(count));
+        this.count = count;
+        repaint();
+      }
+    }
+  }
+
+  private class CounterPane extends RunPane implements Runnable {
+    private JTextField        errors = new JTextField();
+    private Counter[]         counters = new Counter[8];
+
+    CounterPane () {
+      setLayout(new BorderLayout());
+      add(errors, BorderLayout.NORTH);
+      errors.setEditable(false);
+      JPanel counterPane = new JPanel(new GridLayout(8, 1));
+      for (int ii = 0; ii < 8; ii ++) {
+        counterPane.add(counters[ii] = new Counter(ii));
+      }
+      add(counterPane, BorderLayout.CENTER);
+    }
+
+    public void run () {
+      errors.setText("");
+      HidServices hidServices = HidManager.getHidServices();
+      try {
+        String serialNum = serial.getText().toUpperCase();
+        HidDevice hidDevice = hidServices.getHidDevice(VENDOR_ID, PRODUCT_ID, serialNum.length() > 0 ? serialNum : null);
+        if (hidDevice != null) {
+          if (hidDevice.isOpen()) {
+            while (running) {
+              for (int counter = 0; counter < 8; counter++) {
+                boolean reset = counters[counter].doReset;
+                counters[counter].doReset = false;
+                byte[] pi = new byte[]{(byte) 'R', (byte) (reset ? 'C' : 'E'), (byte) (counter + '0'), 0, 0, 0, 0};
+                if (hidDevice.write(pi, PACKET_LENGTH, (byte) 0x01) >= 0) {
+                  byte[] response = new byte[PACKET_LENGTH];
+                  // This method will now block for 20 ms or until data is read
+                  if (hidDevice.read(response, 20) > 0) {
+                    int rsp = parseValue(response);
+                    counters[counter].setCount(rsp);
+                  }
+                }
+              }
+              Thread.sleep(100);
+            }
+          } else {
+            errors.setText("Unable to connect to ADU218" + (serialNum.length() > 0 ? " - serial: " + serialNum : "") + "\n");
+          }
+          hidDevice.close();
+        } else {
+          errors.setText("ADU218" + (serialNum.length() > 0 ? " - serial: " + serialNum : "") + " not found\n");
+        }
+      } catch (InterruptedException ex) {
+        errors.setText(ex.toString());
+        ex.printStackTrace();
+        running = false;
+      } finally {
+        HidApi.exit();
+      }
+    }
+  }
+
   private class Indicator extends JPanel {
     private boolean   on;
 
@@ -112,13 +218,12 @@ public class ADU218Test extends JFrame {
     }
   }
 
-  private class InteractivePane extends JPanel implements Runnable {
-    private List<Input> inputs = new ArrayList<>();
-    private List<Relay> relays = new ArrayList<>();
-    private JTextField  errors = new JTextField();
-    private boolean   running;
+  private class InteractivePane extends RunPane implements Runnable {
+    private List<Input>       inputs = new ArrayList<>();
+    private List<Relay>       relays = new ArrayList<>();
+    private JTextField        errors = new JTextField();
 
-    InteractivePane (JTabbedPane tabs) {
+    InteractivePane () {
       setBackground(new Color(48, 89, 205));
       setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
       setLayout(new GridLayout(3, 1));
@@ -150,18 +255,10 @@ public class ADU218Test extends JFrame {
         relayPanel.add(relay);
       }
       add(relayPanel);
-      tabs.addChangeListener(ev -> {
-        JTabbedPane sourceTabbedPane = (JTabbedPane) ev.getSource();
-        if (sourceTabbedPane.getSelectedIndex() == 1) {
-          running = true;
-          new Thread(this).start();
-        } else {
-          running = false;
-        }
-      });
     }
 
     public void run () {
+      errors.setText("");
       HidServices hidServices = HidManager.getHidServices();
       try {
         String serialNum = serial.getText().toUpperCase();
@@ -171,7 +268,7 @@ public class ADU218Test extends JFrame {
           if (hidDevice.isOpen()) {
             while (running) {
               // Read inputs and update state of Indicators
-              byte[] pi = new byte[]{'P', 'I', 0, 0, 0, 0, 0};
+              byte[] pi = new byte[]{(byte) 'P', (byte) 'I', 0, 0, 0, 0, 0};
               if (hidDevice.write(pi, PACKET_LENGTH, (byte) 0x01) >= 0) {
                 byte[] response = new byte[PACKET_LENGTH];
                 // This method will now block for 50 ms or until data is read
@@ -291,13 +388,7 @@ public class ADU218Test extends JFrame {
             moreData = false;
             break;
           default:
-            int rsp = 0;
-            for (int ii = 1; ii < response.length & ii < 4; ii++) {
-              if (response[ii] != 0 && response[ii] >= '0' && response[ii] <= '9') {
-                rsp *= 10;
-                rsp += response[ii] - '0';
-              }
-            }
+            int rsp = parseValue(response);
             text.append("Rsp: 0x" + toHex(rsp) + " - " + toBin(rsp) + "b\n");
             moreData = false;
             break;
@@ -311,7 +402,23 @@ public class ADU218Test extends JFrame {
     super("ADU218Test");
     JTabbedPane tabs = new JTabbedPane();
     tabs.addTab("Command", new CommandPane());
-    tabs.addTab("Interactive", new InteractivePane(tabs));
+    InteractivePane iPane = new InteractivePane();
+    tabs.addTab("Interactive", iPane);
+    CounterPane cPane = new CounterPane();
+    tabs.addTab("Counters", cPane);
+    tabs.addChangeListener(ev -> {
+      JTabbedPane sourceTabbedPane = (JTabbedPane) ev.getSource();
+      iPane.stop();
+      cPane.stop();
+      switch (sourceTabbedPane.getSelectedIndex()) {
+        case 1:
+          iPane.start();
+          break;
+        case 2:
+          cPane.start();
+          break;
+      }
+    });
     add(tabs);
     setLocationRelativeTo(null);
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

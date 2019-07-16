@@ -1,4 +1,4 @@
-# Command Mode
+## Command Mode
 
 <p align="center"><img src="https://github.com/wholder/ADU218/blob/master/images/ADU218%20Screenshot-command.png"></p>
 
@@ -19,13 +19,19 @@ ADU218 provides a simple GUI interface that can send commands to an [OnTrak Cont
  *  **`WDn`** - Sets Sets watchdog timeout length (1 = 1 sec, 2 = 10 secs, 3 = 1 min)
  *  **`WD`** - Returns watchdog setting
 
-Note: use the optional "**`Serial`**" text field to enter the serial number of a specific ADU218, or leave blank if only one connected.
+Note: use the optional "**`Serial`**" text field to enter the serial number of a specific ADU218, or leave blank if only one ADU218 is connected.
 
-# Interactive Mode
+## Interactive Mode
 
 <p align="center"><img src="https://github.com/wholder/ADU218/blob/master/images/ADU218%20Screenshot-interactive.png"></p>
 
 Selecting the "Interactive" tab open up a simple GUI interface that shows the state of the inputs in real time (10 Hz refresh rate) and lets you open and close amy of the 8 relays by clicking on the corresponding checkbox.
+
+## Counters Mode
+
+<p align="center"><img src="https://github.com/wholder/ADU218/blob/master/images/ADU218%20Screenshot-counters.png"></p>
+
+Selecting the "Counters" tab open up a display that shows the current state of the counters and allows you to individually reset them.
 
 ### Requirements
 Java 8 JDK, or later must be installed in order to compile the code.  There is also a [**Runnable JAR file**](https://github.com/wholder/ADU218/blob/master/out/artifacts/ADU218Test_jar) included in the checked in code that you can download.   On a Mac, just double click the **`ADU218Test.jar`** file and it should startOn a Mac, simply double click the **`LaserCut.jar`** file to run it once you've downloaded it, although you'll probably have to right click and select "Open" the  first time you run LaserCut due to new Mac OS X security checks.  You should also be able to run the JAR file on Windows or Linux systems, but you'll need to have a Java 8 JRE, or later installed and follow the appropriate process for each needed to run an executable JAR file.
