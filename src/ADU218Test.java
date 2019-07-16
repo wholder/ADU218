@@ -85,6 +85,7 @@ public class ADU218Test extends JFrame {
       add(counter, BorderLayout.CENTER);
       counter.setFont(new Font("Monoco", Font.PLAIN, 22));
       counter.setHorizontalAlignment(SwingConstants.RIGHT);
+      counter.setEditable(false);
       JButton reset = new JButton("RESET");
       add(reset, BorderLayout.EAST);
       reset.addActionListener(ev -> doReset = true);
