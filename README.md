@@ -2,7 +2,7 @@
 
 <p align="center"><img src="https://github.com/wholder/ADU218/blob/master/images/ADU218%20Screenshot-command.png"></p>
 
-ADU218 provides a simple GUI interface that can send commands to an [OnTrak Control Systems](http://ontrak.net) ADU218 USB Relay I/O Interface.  to use, simply type a command into the text field at the bottom of the window and press enter.  Example commands are:
+ADU218 provides a simple GUI interface that can send commands to an [OnTrak Control Systems](http://ontrak.net) ADU218 USB Relay I/O Interface.  To use, simply type a command into the text field at the bottom of the window and press enter.  Example commands are:
 
  *  **`SKn`** - Enable Relay n
  *  **`RKn`** - Disable Relay n
@@ -34,9 +34,9 @@ Selecting the "Interactive" tab open up a simple GUI interface that shows the st
 Selecting the "Counters" tab open up a display that shows the current state of the counters and allows you to individually reset them.
 
 ### Requirements
-Java 8 JDK, or later must be installed in order to compile the code.  There is also a [**Runnable JAR file**](https://github.com/wholder/ADU218/blob/master/out/artifacts/ADU218Test_jar) included in the checked in code that you can download.   On a Mac, just double click the **`ADU218Test.jar`** file and it should startOn a Mac, simply double click the **`LaserCut.jar`** file to run it once you've downloaded it, although you'll probably have to right click and select "Open" the  first time you run LaserCut due to new Mac OS X security checks.  You should also be able to run the JAR file on Windows or Linux systems, but you'll need to have a Java 8 JRE, or later installed and follow the appropriate process for each needed to run an executable JAR file.
+Java 8 JDK, or later must be installed in order to compile the code.  There is also a [**Runnable JAR file**](https://github.com/wholder/ADU218/blob/master/out/artifacts/ADU218Test_jar) included in the checked in code that you can download.   On a Mac, just double click the **`ADU218Test.jar`** file and it should startOn a Mac, simply double click the **`ADU218Test.jar`** file to run it once you've downloaded it, although you'll probably have to right click and select "Open" the  first time you run ADU218 due to new Mac OS X security checks.  You should also be able to run the JAR file on Windows or Linux systems, but you'll need to have a Java 8 JRE, or later installed and follow the appropriate process for each needed to run an executable JAR file.
 
 ## Credits
-LaserCut uses the following Java code to perform some of its functions, or build this project:
+ADU218 uses the following Java code to perform some of its functions, or build this project:
 - [hid4java](https://github.com/gary-rowe/hid4java) provides HID-based communication with the ADU218
 - [IntelliJ IDEA from JetBrains](https://www.jetbrains.com/idea/) (my favorite development environment for Java coding. Thanks JetBrains!)
