@@ -14,6 +14,9 @@ import java.util.prefs.Preferences;
 /*
  *  Demonstrate the USB HID interface using an OnTrak ADU218 Solid-State Relay I/O Interface
  *
+ *  Author: Wayne Holder, 2019
+ *  License: MIT (https://opensource.org/licenses/MIT)
+ *
  *  Inputs:     Optically-isolated inputs for contact or TTL Input (also accept up to 28 VDC)
  *
  *  Outputs:    Solid-State PhotoMOS Relay outputs rated 1.0A @ 120VAC, 1.0A @ 120VDC
